@@ -52,27 +52,14 @@ jobs:
 
   notificacao:
     runs-on: ubuntu-latest
-    needs: [testes, build] # Este job agora depende dos jobs 'testes' e 'build'
-    if: always() # Garante que o e-mail será enviado sempre
+    needs: [testes, build]
+    if: always()
     steps:
       - name: Instalar software necessário para o pipeline
         run: |
-          sudo apt-get update
           sudo apt-get install -y mailutils
 
       - name: Enviar e-mail de notificação
         run: |
-          STATUS_TESTES="sucesso"
-          STATUS_BUILD="sucesso"
-
-          if [[ ${{ needs.testes.result }} != 'success' ]]; then
-              STATUS_TESTES="falha"
-          fi
-
-          if [[ ${{ needs.build.result }} != 'success' ]]; then
-              STATUS_BUILD="falha"
-          fi
-
-          BODY="O pipeline do projeto GerenciadorPedidos foi executado. Status: Testes: $STATUS_TESTES, Build: $STATUS_BUILD."
-
-          echo "$BODY" | mail -s "Status do Pipeline - ${{ github.ref }}" ${{ secrets.EMAIL_NOTIFICACAO }}
+          BODY="O pipeline do projeto GerenciadorPedidos foi executado."
+          echo "$BODY" | mail -s "Status do Pipeline" ${{ secrets.EMAIL_NOTIFICACAO }}
