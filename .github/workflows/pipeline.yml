@@ -62,4 +62,4 @@ jobs:
       - name: Enviar e-mail de notificação
         run: |
           BODY="O pipeline do projeto GerenciadorPedidos foi executado."
-          echo "$BODY" | mail -s "Status do Pipeline" venompedropereira@hotmail.com
+          echo "$BODY" | mail -s "Status do Pipeline" ${{ secrets.EMAIL_NOTIFICACAO }}
