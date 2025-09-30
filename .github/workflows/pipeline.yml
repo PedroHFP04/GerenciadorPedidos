@@ -55,9 +55,6 @@ jobs:
     needs: [testes, build]
     if: always()
     steps:
-      - name: Checkout do código
-      - uses: actions/checkout@v4
-
       - name: Instalar software necessário para o pipeline
         run: |
           sudo apt-get install mailutils
