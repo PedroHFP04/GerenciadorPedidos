@@ -56,10 +56,10 @@ jobs:
     if: always()
     steps:
       - name: Instalar software necessário para o pipeline
-        run: |
+        run:
           sudo apt-get install mailutils
 
       - name: Enviar e-mail de notificação
-        run: |
+        run:
           BODY="O pipeline do projeto GerenciadorPedidos foi executado."
           echo "$BODY" | mail -s "Status do Pipeline" ${{ secrets.EMAIL_NOTIFICACAO }}
