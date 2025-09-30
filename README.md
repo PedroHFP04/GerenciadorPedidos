@@ -1,6 +1,6 @@
 # Gerenciador de Pedidos
 
-![Status do Pipeline](https://github.com/SEU-USUARIO/SEU-REPOSITORIO/actions/workflows/pipeline.yml/badge.svg)
+[![CI do Projeto GerenciadorPedidos](https://github.com/PedroHFP04/GerenciadorPedidos/actions/workflows/pipeline.yml/badge.svg)](https://github.com/PedroHFP04/GerenciadorPedidos/actions/workflows/pipeline.yml)
 
 Este projeto é uma aplicação de gerenciamento de pedidos em Java, desenvolvida com Maven. Ele inclui testes unitários utilizando JUnit e Mockito, e um pipeline de CI/CD configurado no GitHub Actions para automatizar a execução dos testes, o build da aplicação e o envio de notificações.
 
