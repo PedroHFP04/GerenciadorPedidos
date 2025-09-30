@@ -3,7 +3,7 @@ name: CI do Projeto GerenciadorPedidos
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   testes:
@@ -22,9 +22,14 @@ jobs:
       - name: Executar testes com Maven
         run: mvn test
 
+      - name: Armazenar relatórios de teste
+        uses: actions/upload-artifact@v4
+        with:
+          name: Relatorios de Teste
+          path: target/surefire-reports/
+
   build:
     runs-on: ubuntu-latest
-    needs: testes  # Este job depende do job 'testes'
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -35,28 +40,26 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: 'maven'
-          
-      - name: Instalar dependências necessárias para o pipeline
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y mailutils
 
       - name: Empacotar o projeto
         run: mvn package
 
-      - name: Armazenar artefatos de build
+      - name: Armazenar artefato de build
         uses: actions/upload-artifact@v4
         with:
-          name: Pacote e Relatórios de Teste
-          path: |
-            target/*.jar
-            target/surefire-reports/
+          name: Pacote Build
+          path: target/*.jar
 
   notificacao:
     runs-on: ubuntu-latest
-    needs: [testes, build] # Este job depende dos jobs 'testes' e 'build'
-    if: always() # Garante que este job sempre execute, independentemente do status dos jobs anteriores
+    needs: [testes, build] # Este job agora depende dos jobs 'testes' e 'build'
+    if: always() # Garante que o e-mail será enviado sempre
     steps:
+      - name: Instalar software necessário para o pipeline
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mailutils
+
       - name: Enviar e-mail de notificação
         run: |
           STATUS_TESTES="sucesso"
