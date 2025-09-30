@@ -1,0 +1,75 @@
+name: CI do Projeto GerenciadorPedidos
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Executar testes com Maven
+        run: mvn test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: testes  # Este job depende do job 'testes'
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+          
+      - name: Instalar dependências necessárias para o pipeline
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mailutils
+
+      - name: Empacotar o projeto
+        run: mvn package
+
+      - name: Armazenar artefatos de build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pacote e Relatórios de Teste
+          path: |
+            target/*.jar
+            target/surefire-reports/
+
+  notificacao:
+    runs-on: ubuntu-latest
+    needs: [testes, build] # Este job depende dos jobs 'testes' e 'build'
+    if: always() # Garante que este job sempre execute, independentemente do status dos jobs anteriores
+    steps:
+      - name: Enviar e-mail de notificação
+        run: |
+          STATUS_TESTES="sucesso"
+          STATUS_BUILD="sucesso"
+
+          if [[ ${{ needs.testes.result }} != 'success' ]]; then
+              STATUS_TESTES="falha"
+          fi
+
+          if [[ ${{ needs.build.result }} != 'success' ]]; then
+              STATUS_BUILD="falha"
+          fi
+
+          BODY="O pipeline do projeto GerenciadorPedidos foi executado. Status: Testes: $STATUS_TESTES, Build: $STATUS_BUILD."
+
+          echo "$BODY" | mail -s "Status do Pipeline - ${{ github.ref }}" ${{ secrets.EMAIL_NOTIFICACAO }}
