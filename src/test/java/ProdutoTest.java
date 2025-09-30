@@ -36,7 +36,7 @@ public class ProdutoTest {
 
     @Test
     public void precoNaoPodeSerZeroOuNegativo() {
-        Produto p = new Produto("Água", 0.0, 10);
+        Produto p = new Produto("Águua", 0.0, 10);
         assertEquals(0.0, p.getPreco(), 0.01);
     }
 }
