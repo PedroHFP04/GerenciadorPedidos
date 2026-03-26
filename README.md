@@ -29,7 +29,7 @@ Certifique-se de ter o **JDK 21** e o **Maven** instalados em sua máquina.
 ### Execução Local
 1.  Clone o repositório:
     ```sh
-    git clone [https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git](https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git)
+    git clone [https://github.com/PedroHFP04/GerenciadorPedidos.git](https://github.com/PedroHFP04/GerenciadorPedidos.git)
     cd GerenciadorPedidos
     ```
 2.  Execute os testes unitários com Maven:
@@ -47,7 +47,3 @@ Este projeto possui um pipeline automatizado que é acionado a cada `push` para 
 * **Build:** Empacota a aplicação em um arquivo `.jar`.
 * **Notificação:** Envia um e-mail cada vez que um push for executado.
 
----
-### Observação
-
-Lembre-se de substituir **`SEU-USUARIO`** e **`SEU-REPOSITORIO`** pelos dados do seu repositório no GitHub.
